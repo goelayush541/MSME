@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Apply for Loan{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Loan Application</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle me-2"></i> Before You Apply</h5>
+                    <ul class="mb-0">
+                        <li>Minimum loan amount: ₹50,000</li>
+                        <li>Maximum loan amount: ₹5,000,000</li>
+                        <li>Minimum tenure: 3 months</li>
+                        <li>Maximum tenure: 36 months</li>
+                    </ul>
+                </div>
+                
+                <form method="post" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Loan Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="{{ form.amount.id_for_label }}" class="form-label">Loan Amount (₹)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₹</span>
+                                            {{ form.amount }}
+                                        </div>
+                                        {{ form.amount.errors }}
+                                        <div class="form-text">Enter amount between ₹50,000 to ₹5,000,000</div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="{{ form.tenure_months.id_for_label }}" class="form-label">Loan Tenure (Months)</label>
+                                        {{ form.tenure_months }}
+                                        {{ form.tenure_months.errors }}
+                                    </div>
+                                    
+                                    {% if lenders %}
+                                    <div class="mb-3">
+                                        <label for="lenderSelect" class="form-label">Preferred Lender (Optional)</label>
+                                        <select class="form-select" id="lenderSelect" name="lender">
+                                            <option value="">Select lender</option>
+                                            {% for lender in lenders %}
+                                            <option value="{{ lender.id }}">{{ lender.institution_name }} (₹{{ lender.min_loan_amount }} - ₹{{ lender.max_loan_amount }})</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Business Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Business Name</label>
+                                        <input type="text" class="form-control" value="{{ user_profile.business_name }}" readonly>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Annual Turnover</label>
+                                        <input type="text" class="form-control" value="₹{{ user_profile.annual_turnover }}" readonly>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Credit Score</label>
+                                        <input type="text" class="form-control" value="{{ user_profile.get_credit_score|default:'Not calculated' }}" readonly>
+                                        <div class="form-text">
+                                            <a href="{% url 'calculate_credit_score' %}">Calculate/Refresh Credit Score</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="{{ form.purpose.id_for_label }}" class="form-label">Purpose of Loan</label>
+                        {{ form.purpose }}
+                        {{ form.purpose.errors }}
+                        <div class="form-text">Please describe in detail how you plan to use the loan amount</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Required Documents</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    You will need to upload these documents after submitting the application
+                                </div>
+                                <ul>
+                                    <li>Business Registration Certificate</li>
+                                    <li>Last 6 months bank statements</li>
+                                    <li>GST returns (if applicable)</li>
+                                    <li>KYC documents (Aadhaar, PAN)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">
+                            I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'finance_dashboard' %}" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="termsModalLabel">Loan Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>1. Loan Approval</h6>
+                <p>Loan approval is subject to verification of documents and creditworthiness. MSME Sahayata reserves the right to reject any application without providing a reason.</p>
+                
+                <h6>2. Interest Rates</h6>
+                <p>Interest rates will be determined based on your credit score and may vary between 12% to 18% per annum.</p>
+                
+                <h6>3. Repayment</h6>
+                <p>Repayment will be through EMIs starting from the next month after disbursement. Prepayment charges may apply.</p>
+                
+                <h6>4. Default</h6>
+                <p>Failure to repay the loan may result in legal action and affect your credit score negatively.</p>
+                
+                <h6>5. Documentation</h6>
+                <p>You agree to provide all necessary documents within 7 days of application submission.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Understand</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Client-side validation for loan amount
+    const amountField = document.getElementById('{{ form.amount.id_for_label }}');
+    if (amountField) {
+        amountField.addEventListener('change', function() {
+            const value = parseFloat(this.value);
+            if (value < 50000 || value > 5000000) {
+                this.setCustomValidity('Amount must be between ₹50,000 and ₹5,000,000');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+    
+    // Client-side validation for tenure
+    const tenureField = document.getElementById('{{ form.tenure_months.id_for_label }}');
+    if (tenureField) {
+        tenureField.addEventListener('change', function() {
+            const value = parseInt(this.value);
+            if (value < 3 || value > 36) {
+                this.setCustomValidity('Tenure must be between 3 and 36 months');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+    
+    // Form validation
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}My Loan Applications{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">My Loan Applications</h4>
+                <a href="{% url 'apply_loan' %}" class="btn btn-light">New Application</a>
+            </div>
+            <div class="card-body">
+                {% if loan_applications %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Application ID</th>
+                                <th>Amount</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Applied Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for loan in loan_applications %}
+                            <tr>
+                                <td>LN-{{ loan.id|stringformat:"04d" }}</td>
+                                <td>₹{{ loan.amount }}</td>
+                                <td>{{ loan.purpose|truncatechars:30 }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if loan.status == 'APPROVED' %}bg-success
+                                        {% elif loan.status == 'REJECTED' %}bg-danger
+                                        {% elif loan.status == 'DISBURSED' %}bg-success
+                                        {% else %}bg-warning{% endif %}">
+                                        {{ loan.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>{{ loan.applied_date|date:"d M Y" }}</td>
+                                <td>
+                                    <a href="{% url 'loan_detail' loan.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    You haven't applied for any loans yet.
+                    <a href="{% url 'apply_loan' %}" class="alert-link">Apply for a loan now</a>.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

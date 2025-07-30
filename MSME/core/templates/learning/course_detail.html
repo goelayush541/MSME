@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <img src="{{ course.thumbnail_url }}" class="card-img-top" alt="{{ course.title }}">
+            <div class="card-body">
+                <h1 class="card-title">{{ course.title }}</h1>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">By {{ course.instructor }}</span>
+                    <span class="badge bg-primary">{{ course.level }}</span>
+                </div>
+                
+                <div class="mb-4">
+                    <h4>About This Course</h4>
+                    <p>{{ course.description }}</p>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ course.duration_hours }}</h5>
+                                <p class="card-text">Hours</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">10</h5>
+                                <p class="card-text">Lessons</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Certificate</h5>
+                                <p class="card-text">On Completion</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    {% if is_enrolled %}
+                        <a href="#" class="btn btn-success">Continue Learning</a>
+                    {% else %}
+                        <a href="{% url 'enroll_course' course.id %}" class="btn btn-primary">Enroll Now</a>
+                    {% endif %}
+                </div>
+                
+                <hr>
+                
+                <h5>What You'll Learn</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Digital marketing fundamentals</li>
+                    <li class="list-group-item">E-commerce setup</li>
+                    <li class="list-group-item">Business management</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}My Invoices{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Invoice Discounting</h4>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-4">
+                    <h5>My Invoices</h5>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newInvoiceModal">
+                        <i class="fas fa-plus"></i> Add Invoice
+                    </button>
+                </div>
+                
+                {% if invoices %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invoice #</th>
+                                <th>Buyer</th>
+                                <th>Amount</th>
+                                <th>Issue Date</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for invoice in invoices %}
+                            <tr>
+                                <td>{{ invoice.invoice_number }}</td>
+                                <td>{{ invoice.buyer.organization_name }}</td>
+                                <td>₹{{ invoice.amount }}</td>
+                                <td>{{ invoice.issue_date|date:"d M Y" }}</td>
+                                <td>{{ invoice.due_date|date:"d M Y" }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if invoice.status == 'PAID' %}bg-success
+                                        {% elif invoice.status == 'OVERDUE' %}bg-danger
+                                        {% else %}bg-warning{% endif %}">
+                                        {{ invoice.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View</a>
+                                    {% if invoice.status == 'PENDING' %}
+                                    <a href="#" class="btn btn-sm btn-outline-success">Discount</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    You haven't added any invoices yet. Add your first invoice to get started with invoice discounting.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Invoice Modal -->
+<div class="modal fade" id="newInvoiceModal" tabindex="-1" aria-labelledby="newInvoiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="newInvoiceModalLabel">Add New Invoice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{% url 'add_invoice' %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="invoiceNumber" class="form-label">Invoice Number</label>
+                        <input type="text" class="form-control" id="invoiceNumber" name="invoice_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="buyerSelect" class="form-label">Buyer</label>
+                        <select class="form-select" id="buyerSelect" name="buyer" required>
+                            <option value="" selected disabled>Select buyer</option>
+                            {% for buyer in buyers %}
+                            <option value="{{ buyer.id }}">{{ buyer.organization_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="invoiceAmount" class="form-label">Amount (₹)</label>
+                            <input type="number" class="form-control" id="invoiceAmount" name="amount" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="issueDate" class="form-label">Issue Date</label>
+                            <input type="date" class="form-control" id="issueDate" name="issue_date" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dueDate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="dueDate" name="due_date" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Invoice</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

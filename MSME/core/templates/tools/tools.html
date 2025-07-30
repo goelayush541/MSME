@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Business Tools{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Business Tools</h4>
+            </div>
+            <div class="card-body">
+                {% if user.user_type != 'MSME' %}
+                <div class="alert alert-info">
+                    Some tools are specifically designed for MSMEs. Register as an MSME to access all features.
+                </div>
+                {% endif %}
+                
+                <div class="row">
+                    {% for tool in tools %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ tool.name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ tool.get_tool_type_display }}</h6>
+                                <p class="card-text">{{ tool.description }}</p>
+                                
+                                {% if tool.id in subscribed_tools %}
+                                    <span class="badge bg-success mb-2">Subscribed</span>
+                                    <a href="{% if tool.tool_type == 'ERP' %}{% url 'erp_dashboard' %}
+                                          {% elif tool.tool_type == 'CRM' %}{% url 'crm_dashboard' %}
+                                          {% elif tool.tool_type == 'INV' %}{% url 'inventory_management' %}
+                                          {% else %}#{% endif %}" 
+                                       class="btn btn-sm btn-primary">
+                                        Open Tool
+                                    </a>
+                                {% else %}
+                                    {% if tool.is_free %}
+                                        <a href="{% url 'subscribe_tool' tool.id %}" 
+                                           class="btn btn-sm btn-primary {% if user.user_type != 'MSME' %}disabled{% endif %}"
+                                           {% if user.user_type != 'MSME' %}title="Available for MSME users only"{% endif %}>
+                                            Subscribe Free
+                                        </a>
+                                    {% else %}
+                                        <button class="btn btn-sm btn-outline-secondary" disabled>Premium Tool</button>
+                                    {% endif %}
+                                {% endif %}
+                                
+                                <a href="{{ tool.tutorial_url }}" target="_blank" class="btn btn-sm btn-outline-info ms-2">Tutorial</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-warning">
+                            No tools are currently available.
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

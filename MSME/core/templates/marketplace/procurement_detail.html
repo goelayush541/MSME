@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}{{ procurement.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>{{ procurement.title }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5>Description</h5>
+                    <p>{{ procurement.description }}</p>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Quantity</h6>
+                                <p class="card-text">{{ procurement.quantity }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Price Range</h6>
+                                <p class="card-text">{{ procurement.expected_price_range }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Deadline</h6>
+                                <p class="card-text">{{ procurement.deadline|date:"d M Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Posted By</h5>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0">{{ procurement.buyer.organization_name }}</h6>
+                            <small class="text-muted">{{ procurement.created_at|timesince }} ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Bids Received</h5>
+            </div>
+            <div class="card-body">
+                {% if bids %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Supplier</th>
+                                <th>Price</th>
+                                <th>Delivery Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bid in bids %}
+                            <tr>
+                                <td>{{ bid.msme.business_name }}</td>
+                                <td>₹{{ bid.price }}</td>
+                                <td>{{ bid.delivery_time }}</td>
+                                <td>
+                                    <span class="badge 
+                                        {% if bid.status == 'AWARDED' %}bg-success
+                                        {% elif bid.status == 'REJECTED' %}bg-danger
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ bid.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">View</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    No bids have been submitted yet.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                {% if user.user_type == 'MSME' %}
+                <a href="{% url 'submit_bid' procurement.id %}" class="btn btn-primary w-100 mb-3">Submit Bid</a>
+                {% endif %}
+                
+                {% if user.user_type == 'BUYER' and user == procurement.buyer.user %}
+                <button class="btn btn-outline-primary w-100 mb-3">Edit Requirement</button>
+                <button class="btn btn-outline-danger w-100">Close Requirement</button>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>Similar Requirements</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <a href="#">Auto Components - 500 units</a>
+                        <small class="text-muted d-block">Deadline: 15 Jun 2023</small>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#">Electronics Parts - 200 units</a>
+                        <small class="text-muted d-block">Deadline: 20 Jun 2023</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

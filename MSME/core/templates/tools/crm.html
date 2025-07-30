@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Relationship Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Customer Management</h4>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs mb-4" id="crmTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="customers-tab" data-bs-toggle="tab" 
+                            data-bs-target="#customers" type="button" role="tab">
+                            Customers
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="leads-tab" data-bs-toggle="tab" 
+                            data-bs-target="#leads" type="button" role="tab">
+                            Leads
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="interactions-tab" data-bs-toggle="tab" 
+                            data-bs-target="#interactions" type="button" role="tab">
+                            Interactions
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="crmTabsContent">
+                    <div class="tab-pane fade show active" id="customers" role="tabpanel">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5>Customer List</h5>
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Add Customer
+                            </button>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Customer ID</th>
+                                        <th>Name</th>
+                                        <th>Organization</th>
+                                        <th>Contact</th>
+                                        <th>Last Order</th>
+                                        <th>Value</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CUST-001</td>
+                                        <td>Rahul Sharma</td>
+                                        <td>Delhi Auto Parts</td>
+                                        <td>rahul@delhiauto.com<br>9876543210</td>
+                                        <td>15 May 2023</td>
+                                        <td>₹25,000</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">View</button>
+                                            <button class="btn btn-sm btn-outline-success">Message</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CUST-002</td>
+                                        <td>Priya Patel</td>
+                                        <td>National Electronics</td>
+                                        <td>priya@national.com<br>8765432109</td>
+                                        <td>10 May 2023</td>
+                                        <td>₹18,500</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">View</button>
+                                            <button class="btn btn-sm btn-outline-success">Message</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="leads" role="tabpanel">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5>Sales Leads</h5>
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Add Lead
+                            </button>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Lead ID</th>
+                                        <th>Name</th>
+                                        <th>Organization</th>
+                                        <th>Status</th>
+                                        <th>Last Contact</th>
+                                        <th>Potential Value</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>LEAD-001</td>
+                                        <td>Sanjay Gupta</td>
+                                        <td>Gupta Industries</td>
+                                        <td><span class="badge bg-warning">Contacted</span></td>
+                                        <td>12 May 2023</td>
+                                        <td>₹42,000</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">View</button>
+                                            <button class="btn btn-sm btn-outline-success">Follow Up</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="interactions" role="tabpanel">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5>Customer Interactions</h5>
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Log Interaction
+                            </button>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Type</th>
+                                        <th>Details</th>
+                                        <th>Follow Up</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>18 May 2023</td>
+                                        <td>Rahul Sharma</td>
+                                        <td>Email</td>
+                                        <td>Quote request for 100 units</td>
+                                        <td>20 May 2023</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">View</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>15 May 2023</td>
+                                        <td>Priya Patel</td>
+                                        <td>Phone Call</td>
+                                        <td>Order confirmation</td>
+                                        <td>None</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary">View</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

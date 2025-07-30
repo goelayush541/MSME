@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}My Courses{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>My Learning Dashboard</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-white bg-success">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ completed_courses }}</h5>
+                                <p class="card-text">Courses Completed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-white bg-info">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ in_progress_courses }}</h5>
+                                <p class="card-text">Courses in Progress</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-white bg-warning">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ hours_learned }}</h5>
+                                <p class="card-text">Hours Learned</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mt-4">My Courses</h5>
+                <div class="row">
+                    {% for enrollment in enrollments %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ enrollment.course.thumbnail_url }}" class="card-img-top" alt="{{ enrollment.course.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">{{ enrollment.course.duration_hours }} hours</span>
+                                    <span class="badge bg-primary">{{ enrollment.course.level }}</span>
+                                </div>
+                                <div class="progress mb-3">
+                                    <div class="progress-bar" role="progressbar" style="width: {{ enrollment.progress }}%" 
+                                        aria-valuenow="{{ enrollment.progress }}" aria-valuemin="0" aria-valuemax="100">
+                                        {{ enrollment.progress }}%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="{% url 'course_detail' enrollment.course.id %}" class="btn btn-primary w-100">
+                                    {% if enrollment.completed %}View Certificate{% else %}Continue Learning{% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            You haven't enrolled in any courses yet. 
+                            <a href="{% url 'learning_hub' %}" class="alert-link">Browse our courses</a> to get started.
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

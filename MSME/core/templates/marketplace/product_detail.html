@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <img src="{{ product.get_main_image }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+                <div class="row">
+                    {% for image in product.images %}
+                    <div class="col-3">
+                        <img src="{{ image }}" class="img-thumbnail" alt="Product image">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">{{ product.name }}</h2>
+                <h4 class="text-primary">₹{{ product.price }}</h4>
+                <p class="text-muted">MOQ: {{ product.moq }} units</p>
+                
+                <div class="mb-4">
+                    <h5>Description</h5>
+                    <p>{{ product.description }}</p>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Specifications</h5>
+                    <ul class="list-group">
+                        {% for key, value in product.specifications.items %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>{{ key }}</span>
+                            <span class="text-muted">{{ value }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted">Posted on {{ product.created_at|date:"d M Y" }}</span>
+                    <span class="badge bg-secondary">{{ product.category }}</span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary">Contact Supplier</button>
+                    {% if user.user_type == 'BUYER' %}
+                    <button class="btn btn-outline-primary">Request Quote</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

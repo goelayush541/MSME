@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Finance Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Credit Profile</h5>
+            </div>
+            <div class="card-body text-center">
+                {% if credit_score %}
+                    <div class="display-4">{{ credit_score.score }}</div>
+                    <div class="text-muted">Credit Score</div>
+                    <small class="text-muted">Last updated: {{ credit_score.last_updated|date:"d M Y" }}</small>
+                {% else %}
+                    <p>No credit score available</p>
+                    <a href="{% url 'calculate_credit_score' %}" class="btn btn-sm btn-primary">Calculate Score</a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'apply_loan' %}" class="btn btn-primary">Apply for Loan</a>
+                    <a href="{% url 'finance_options' %}" class="btn btn-outline-primary">View Finance Options</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Loan Applications</h5>
+                <a href="{% url 'apply_loan' %}" class="btn btn-sm btn-light">New Application</a>
+            </div>
+            <div class="card-body">
+                {% if loan_applications %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for loan in loan_applications %}
+                                <tr>
+                                    <td>₹{{ loan.amount }}</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if loan.status == 'APPROVED' %}bg-success
+                                            {% elif loan.status == 'REJECTED' %}bg-danger
+                                            {% else %}bg-warning{% endif %}">
+                                            {{ loan.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ loan.applied_date|date:"d M Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'loan_detail' loan.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>No loan applications found</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

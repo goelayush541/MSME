@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron bg-light p-5 rounded-lg m-3">
+    <h1 class="display-4">Welcome to MSME Sahayata</h1>
+    <p class="lead">Empowering Delhi's small businesses through finance, markets, and technology.</p>
+    <hr class="my-4">
+    <p>Join our platform to access working capital, new markets, and business tools.</p>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+    </div>
+</div>
+
+<div class="row m-3">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Access to Finance</h5>
+                <p class="card-text">Get loans and credit facilities tailored for MSMEs with flexible repayment options.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Market Linkages</h5>
+                <p class="card-text">Connect with buyers and suppliers across Delhi's industrial ecosystem.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Business Tools</h5>
+                <p class="card-text">Free and premium tools to manage your inventory, accounting and customer relationships.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory Management{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Inventory Management</h4>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-4">
+                    <h5>Product Inventory</h5>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Current Stock</th>
+                                <th>Reorder Level</th>
+                                <th>Unit Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PROD-001</td>
+                                <td>Steel Bracket</td>
+                                <td>Hardware</td>
+                                <td>
+                                    <span class="badge bg-success">45</span>
+                                </td>
+                                <td>20</td>
+                                <td>₹120</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>PROD-002</td>
+                                <td>Plastic Casing</td>
+                                <td>Plastic</td>
+                                <td>
+                                    <span class="badge bg-warning">15</span>
+                                </td>
+                                <td>25</td>
+                                <td>₹85</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <tr class="table-danger">
+                                <td>PROD-003</td>
+                                <td>Rubber Gasket</td>
+                                <td>Rubber</td>
+                                <td>
+                                    <span class="badge bg-danger">5</span>
+                                </td>
+                                <td>30</td>
+                                <td>₹45</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Product Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label">Category</label>
+                        <select class="form-select" id="productCategory">
+                            <option selected>Select category</option>
+                            <option>Hardware</option>
+                            <option>Plastic</option>
+                            <option>Rubber</option>
+                            <option>Electronics</option>
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="initialStock" class="form-label">Initial Stock</label>
+                            <input type="number" class="form-control" id="initialStock">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="reorderLevel" class="form-label">Reorder Level</label>
+                            <input type="number" class="form-control" id="reorderLevel">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="unitPrice" class="form-label">Unit Price (₹)</label>
+                        <input type="number" class="form-control" id="unitPrice">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Product</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

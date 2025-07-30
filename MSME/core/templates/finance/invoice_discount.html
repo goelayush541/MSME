@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Request Invoice Discounting{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Request Invoice Discounting</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info mb-4">
+                    <h5>Invoice Details</h5>
+                    <p>
+                        <strong>Invoice #:</strong> {{ invoice.invoice_number }}<br>
+                        <strong>Amount:</strong> ₹{{ invoice.amount }}<br>
+                        <strong>Due Date:</strong> {{ invoice.due_date|date:"d M Y" }}
+                    </p>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.requested_amount.id_for_label }}" class="form-label">Amount to Discount (₹)</label>
+                            {{ form.requested_amount }}
+                            <small class="text-muted">Maximum: ₹{{ invoice.amount }}</small>
+                            {{ form.requested_amount.errors }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.discount_rate.id_for_label }}" class="form-label">Discount Rate (%)</label>
+                            {{ form.discount_rate }}
+                            {{ form.discount_rate.errors }}
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <strong>Note:</strong> The funds will be transferred to your account within 2 business days after approval.
+                        A processing fee of 1% will be deducted from the discounted amount.
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'invoice_list' %}" class="btn btn-outline-secondary me-md-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

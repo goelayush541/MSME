@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}ERP Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Business Management Dashboard</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">₹25,000</h5>
+                                <p class="card-text">Monthly Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">15</h5>
+                                <p class="card-text">Active Orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">8</h5>
+                                <p class="card-text">Pending Tasks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-danger mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">3</h5>
+                                <p class="card-text">Low Stock Items</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Recent Orders</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>ORD-1001</td>
+                                            <td>15 May 2023</td>
+                                            <td>₹5,200</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ORD-1000</td>
+                                            <td>10 May 2023</td>
+                                            <td>₹8,750</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Inventory Alerts</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-warning">
+                                    <strong>Product A</strong> is running low (5 remaining)
+                                </div>
+                                <div class="alert alert-danger">
+                                    <strong>Product B</strong> is out of stock
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

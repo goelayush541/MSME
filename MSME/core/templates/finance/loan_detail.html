@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Loan Application #{{ loan.id }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Loan Application #LN-{{ loan.id|stringformat:"04d" }}</h4>
+                <span class="badge 
+                    {% if loan.status == 'APPROVED' %}bg-success
+                    {% elif loan.status == 'REJECTED' %}bg-danger
+                    {% elif loan.status == 'DISBURSED' %}bg-success
+                    {% else %}bg-warning{% endif %}">
+                    {{ loan.get_status_display }}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Loan Details</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Amount:</span>
+                                <strong>₹{{ loan.amount }}</strong>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Tenure:</span>
+                                <strong>{{ loan.tenure_months }} months</strong>
+                            </li>
+                            {% if loan.interest_rate %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Interest Rate:</span>
+                                <strong>{{ loan.interest_rate }}%</strong>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Timeline</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Applied On:</span>
+                                <strong>{{ loan.applied_date|date:"d M Y" }}</strong>
+                            </li>
+                            {% if loan.status == 'APPROVED' or loan.status == 'DISBURSED' %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Approved On:</span>
+                                <strong>{{ loan.applied_date|date:"d M Y" }}</strong>
+                            </li>
+                            {% endif %}
+                            {% if loan.status == 'DISBURSED' %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Disbursed On:</span>
+                                <strong>{{ loan.applied_date|date:"d M Y" }}</strong>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Purpose</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            {{ loan.purpose }}
+                        </div>
+                    </div>
+                </div>
+                
+                {% if loan.lender %}
+                <div class="mb-4">
+                    <h5>Lender Details</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>{{ loan.lender.institution_name }}</h6>
+                            <p class="mb-1">{{ loan.lender.institution_type }}</p>
+                            <p class="mb-1">Loan Range: ₹{{ loan.lender.min_loan_amount }} - ₹{{ loan.lender.max_loan_amount }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if loan.documents %}
+                <div class="mb-4">
+                    <h5>Documents Submitted</h5>
+                    <div class="list-group">
+                        {% for doc_name, doc_url in loan.documents.items %}
+                        <a href="{{ doc_url }}" class="list-group-item list-group-item-action" target="_blank">
+                            {{ doc_name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if loan.status == 'PENDING' %}
+                <div class="alert alert-info">
+                    Your loan application is under review. You'll be notified once a decision is made.
+                </div>
+                {% elif loan.status == 'APPROVED' %}
+                <div class="alert alert-success">
+                    Your loan has been approved! The funds will be disbursed to your account within 3-5 working days.
+                </div>
+                {% elif loan.status == 'REJECTED' %}
+                <div class="alert alert-danger">
+                    Your loan application has been rejected. Please contact our support for more information.
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'finance_dashboard' %}" class="btn btn-outline-secondary">
+                    Back to Finance Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

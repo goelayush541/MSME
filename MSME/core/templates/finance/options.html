@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Finance Options{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Available Financing Options</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for lender in lenders %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ lender.institution_name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ lender.institution_type }}</h6>
+                                <p class="card-text">
+                                    <strong>Loan Range:</strong> ₹{{ lender.min_loan_amount }} - ₹{{ lender.max_loan_amount }}
+                                </p>
+                                <p class="card-text">
+                                    {{ lender.financial_products_offered|truncatechars:100 }}
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="{% url 'apply_loan' %}?lender={{ lender.id }}" class="btn btn-primary">Apply Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-warning">
+                            No lenders are currently available. Please check back later.
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Complete Lender Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Complete Your Lender Profile</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.institution_name.id_for_label }}" class="form-label">Institution Name</label>
+                            {{ form.institution_name }}
+                            {{ form.institution_name.errors }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.institution_type.id_for_label }}" class="form-label">Institution Type</label>
+                            {{ form.institution_type }}
+                            {{ form.institution_type.errors }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.financial_products_offered.id_for_label }}" class="form-label">Financial Products Offered</label>
+                        {{ form.financial_products_offered }}
+                        {{ form.financial_products_offered.errors }}
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.min_loan_amount.id_for_label }}" class="form-label">Minimum Loan Amount (₹)</label>
+                            {{ form.min_loan_amount }}
+                            {{ form.min_loan_amount.errors }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.max_loan_amount.id_for_label }}" class="form-label">Maximum Loan Amount (₹)</label>
+                            {{ form.max_loan_amount }}
+                            {{ form.max_loan_amount.errors }}
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Complete Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
